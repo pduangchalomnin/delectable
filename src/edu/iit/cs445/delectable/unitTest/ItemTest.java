@@ -2,6 +2,8 @@ package edu.iit.cs445.delectable.unitTest;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,8 +13,6 @@ import edu.iit.cs445.delectable.entity.FoodImp;
 import edu.iit.cs445.delectable.entity.Item;
 
 public class ItemTest {
-
-	private static final double DELTA = 1e-15;
 	
 	Food food;
 	Item item;
@@ -34,7 +34,9 @@ public class ItemTest {
 	
 	@Test
 	public void testGetAmount() {
-		assertEquals(1.99*2, item.getAmount(),DELTA);
+		BigDecimal expected = new BigDecimal(1.99*2);
+		expected = expected.setScale(2, BigDecimal.ROUND_HALF_UP);   
+		assertEquals(expected, item.getAmount());
 	}
 	
 	@Test

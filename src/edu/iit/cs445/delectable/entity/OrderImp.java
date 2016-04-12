@@ -1,5 +1,6 @@
 package edu.iit.cs445.delectable.entity;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,14 +44,14 @@ public class OrderImp implements Order {
 		return status.toString();
 	}
 
-	public double getTotalAmount() {
-		double total = 0.00;
+	public BigDecimal getTotalAmount() {
+		BigDecimal total = new BigDecimal(0);
 		Iterator<Item> it = items.iterator();
 		while(it.hasNext()){
 			Item item = it.next();
-			total += item.getAmount();
-			
+			total = total.add(item.getAmount());	
 		}
+		total = total.setScale(2, BigDecimal.ROUND_HALF_UP);   
 		return total;
 	}
 

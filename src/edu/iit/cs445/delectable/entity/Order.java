@@ -1,5 +1,6 @@
 package edu.iit.cs445.delectable.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface Order {
@@ -9,7 +10,7 @@ public interface Order {
 	public String getCustomerEmail();
 	public int getCustomerId();
 	public String getStatus();
-	public double getTotalAmount();
+	public BigDecimal getTotalAmount();
 	public String getDeliveryDate();
 	public String getOrderDate();
 	public int getId();

@@ -36,10 +36,8 @@ public class Admin_REST_controller {
 			String name = jsonObj.get("name").getAsString();
 			Double price_per_person = jsonObj.get("price_per_person").getAsDouble();
 			int minimum_order = jsonObj.get("minimum_order").getAsInt();
-			Catagory[] catagories = new Gson().fromJson(jsonObj.get("catagories"), Catagory[].class);
+			Catagory[] catagories = new Gson().fromJson(jsonObj.get("categories"), Catagory[].class);
 			
-			//Type collectionType = new TypeToken<List<Catagory>>(){}.getType();
-			//List<Catagory> catagories = new Gson().fromJson(jsonObj.get("catagories"), collectionType);
 			id = adminManager.addFoodToMenu(name, price_per_person, minimum_order, catagories);
 		}
 		catch(RuntimeException e) {
@@ -109,5 +107,27 @@ public class Admin_REST_controller {
 			return Response.status(400).build();
 		}
 		return Response.status(204).header("Location","admin/surcharge").build();
+	}
+	
+	@Path("/delivery/{oid}")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deliveredOrder(@PathParam("oid") int oid,String json) {
+		JsonObject jsonObj = getGsonObject(json);
+		Response response;
+		try {
+			int id = jsonObj.get("id").getAsInt();
+			if(id != oid) {
+				response = Response.status(400).build();
+			}
+			else {
+				adminManager.deliveredOrder(oid);
+				response = Response.status(204).header("Location",String.format("../order/%s",oid)).build();
+			}
+		}
+		catch(RuntimeException e) {
+			response = Response.status(400).build();
+		}
+		return response;
 	}
 }

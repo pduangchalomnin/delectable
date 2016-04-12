@@ -1,5 +1,6 @@
 package edu.iit.cs445.delectable.interactor;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -125,7 +126,10 @@ public class ReportManager implements ReportBoundaryInterface {
 		}
 
 		private void addReportValue(RevenueReport report, Order tmpOrder) {
-			report.setFood_revenue(report.getFood_revenue()+tmpOrder.getTotalAmount());
+			report.setFood_revenue(report.getFood_revenue()+tmpOrder.getTotalAmount().doubleValue());
+			BigDecimal roundUp = new BigDecimal(report.getFood_revenue());
+			roundUp = roundUp.setScale(2, BigDecimal.ROUND_HALF_UP);  
+			report.setFood_revenue(roundUp.doubleValue());
 			report.setSurcharge_revenue(report.getSurcharge_revenue()+tmpOrder.getSurcharge());
 			report.setOrders_placed(report.getOrders_placed()+1);
 			if(tmpOrder.getStatus().equals(Status.CANCELED.toString())) {

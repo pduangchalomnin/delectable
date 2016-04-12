@@ -5,6 +5,10 @@ import edu.iit.cs445.delectable.entity.Food;
 import edu.iit.cs445.delectable.entity.FoodImp;
 import edu.iit.cs445.delectable.entity.Menu;
 import edu.iit.cs445.delectable.entity.MenuImp;
+import edu.iit.cs445.delectable.entity.Order;
+import edu.iit.cs445.delectable.entity.OrdersList;
+import edu.iit.cs445.delectable.entity.OrdersListImp;
+import edu.iit.cs445.delectable.entity.Status;
 
 public class AdminManager implements AdminBoundaryInterface {
 	
@@ -53,6 +57,15 @@ public class AdminManager implements AdminBoundaryInterface {
 		if(surcharge < 0.00)
 			throw new RuntimeException();
 		menu.setSurcharge(surcharge);
+	}
+
+	public void deliveredOrder(int id) throws RuntimeException {
+		OrdersList orders = OrdersListImp.getInstance();
+		Order order = orders.getOrderById(id);
+		if(order.isNil()){
+			throw new RuntimeException();
+		}
+		order.changeStatus(Status.DELIVERIED);
 	}
 
 }

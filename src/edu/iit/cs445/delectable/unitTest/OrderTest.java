@@ -2,6 +2,7 @@ package edu.iit.cs445.delectable.unitTest;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,9 +70,10 @@ public class OrderTest {
 	
 	@Test
 	public void testGetTotalAmountWithoutSurcharge(){
-		assertEquals(1.99, order.getTotalAmount(),DELTA);
+		BigDecimal expected = new BigDecimal(1.99);
+		expected = expected.setScale(2, BigDecimal.ROUND_HALF_UP);  
+		assertEquals(expected, order.getTotalAmount());
 	}
-	
 	
 	@Test
 	public void testGetDeriveryDate(){

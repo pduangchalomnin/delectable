@@ -1,5 +1,6 @@
 package edu.iit.cs445.delectable.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class NullOrder implements Order {
@@ -41,9 +42,9 @@ public class NullOrder implements Order {
 	}
 
 	@Override
-	public double getTotalAmount() {
+	public BigDecimal getTotalAmount() {
 		// TODO Auto-generated method stub
-		return 0;
+		return new BigDecimal(0);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ public enum Status {
 		}
 	},DELIVERIED{
 		public String toString(){
-			return "deliveried";
+			return "delivered";
 		}
 	}
 }

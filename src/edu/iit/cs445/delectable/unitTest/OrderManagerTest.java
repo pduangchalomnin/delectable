@@ -37,9 +37,10 @@ public class OrderManagerTest {
 	
 	@BeforeClass
 	public static void setup() {
+		orders.resetOrders();
 		itemList = new ArrayList<Item>();
 		itemList.add(new Item(food,2));
-		orderId = orders.createOrder("20161202", add, customer, "This is order manager test", itemList,0.0);
+		orderId = orders.createOrder("20161203", add, customer, "This is order manager test", itemList,0.0);
 	}
 	
 	@Test
@@ -75,7 +76,7 @@ public class OrderManagerTest {
 	
 	@Test
 	public void testGetOrderByDateValidInput() {
-		assertEquals(1, orderManager.getOrdersByDate("20161202").size());
+		assertEquals(1, orderManager.getOrdersByDate("20161203").size());
 	}
 	
 	@Test(expected = RuntimeException.class)
@@ -165,7 +166,7 @@ public class OrderManagerTest {
 	
 	@Test
 	public void testGetItemByIdWithExistingOrder() {
-		assertEquals("20161202", orderManager.getOrderById(orderId).getDeliveryDate());
+		assertEquals("20161203", orderManager.getOrderById(orderId).getDeliveryDate());
 	}
 	 
 	@Test(expected = RuntimeException.class)

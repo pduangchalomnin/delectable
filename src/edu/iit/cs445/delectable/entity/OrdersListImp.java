@@ -66,7 +66,7 @@ public class OrdersListImp implements OrdersList {
 	
 	//Test Purpose only
 	public void resetOrders() {
-		instance = new OrdersListImp();
+		orders = new ArrayList<Order>();
 	}
 
 }

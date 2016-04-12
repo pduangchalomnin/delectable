@@ -1,5 +1,7 @@
 package edu.iit.cs445.delectable.entity;
 
+import java.math.BigDecimal;
+
 public class Item {
 	private Food food;
 	private int count;
@@ -14,8 +16,11 @@ public class Item {
 	public int getCount(){
 		return count;
 	}
-	public double getAmount(){
-		return food.getPrice_per_person()*count;
+	public BigDecimal getAmount(){
+		BigDecimal price_per_person = new BigDecimal(food.getPrice_per_person());
+		BigDecimal countBigDecimal = new BigDecimal(count);
+		price_per_person = price_per_person.setScale(2, BigDecimal.ROUND_HALF_UP);   
+		return price_per_person.multiply(countBigDecimal);
 	}
 	
 	public int getItemMinimumOrder(){

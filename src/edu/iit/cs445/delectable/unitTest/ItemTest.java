@@ -16,6 +16,7 @@ public class ItemTest {
 	
 	Food food;
 	Item item;
+	
 	@Before
 	public void createItem(){
 		food = new FoodImp("Food1", 1.99, 3, new Catagory[]{new Catagory("Cat1")});
@@ -32,6 +33,15 @@ public class ItemTest {
 		assertEquals(food, item.getFood());
 	}
 	
+	@Test
+	public void testGetFoodId() {
+		assertEquals(food.getId(), item.getFoodId());
+	}
+	
+	@Test
+	public void testGetFoodName() {
+		assertEquals("Food1", item.getFoodName());
+	}
 	@Test
 	public void testGetAmount() {
 		BigDecimal expected = new BigDecimal(1.99*2);

@@ -31,6 +31,10 @@ import edu.iit.cs445.delectable.interactor.MenuBoundaryInterface;
 import edu.iit.cs445.delectable.interactor.MenuManager;
 import edu.iit.cs445.delectable.interactor.OrderBoundaryInterface;
 import edu.iit.cs445.delectable.interactor.OrderManager;
+import edu.iit.cs445.delectable.rest.presenter.ItemPresenter;
+import edu.iit.cs445.delectable.rest.presenter.OrderDetailPresenter;
+import edu.iit.cs445.delectable.rest.presenter.OrderPresenter;
+import edu.iit.cs445.delectable.rest.presenter.OrdersListPresenter;
 
 @Path("/order")
 public class Order_REST_controller {
@@ -99,7 +103,7 @@ public class Order_REST_controller {
 			}
 			street = street.trim();
 			String city = "";
-			for(int i = 0;i<rightSide.length-1;i++) {
+			for(int i = 0;i<rightSide.length-2;i++) {
 				city += rightSide[i]+" ";
 			}
 			city = city.trim();
@@ -123,17 +127,10 @@ public class Order_REST_controller {
 			if(date==null) {
 				orders = orderManager.getOrders();
 			}
-			else
-			{
+			else {
 				orders = orderManager.getOrdersByDate(date);
 			}
-			List<OrderPresenter> presenter = new ArrayList<OrderPresenter>();
-			Iterator<Order> it = orders.iterator();
-			while(it.hasNext()){
-				Order order = it.next();
-				presenter.add(new OrderPresenter(order.getId(), order.getOrderDate(), order.getDeliveryDate()
-						, order.getTotalAmount(), order.getSurcharge(), order.getStatus(), order.getCustomerEmail()));
-			}
+			List<OrdersListPresenter> presenter = createOrdersListPresenter(orders);
 			s = gson.toJson(presenter);
 		}
 		catch(RuntimeException e) {
@@ -143,6 +140,17 @@ public class Order_REST_controller {
 		return Response.ok(s).build();
 		
 	}
+
+		private List<OrdersListPresenter> createOrdersListPresenter(List<Order> orders) {
+			List<OrdersListPresenter> presenter = new ArrayList<OrdersListPresenter>();
+			Iterator<Order> it = orders.iterator();
+			while(it.hasNext()){
+				Order order = it.next();
+				presenter.add(new OrdersListPresenter(order.getId(), order.getOrderDate(), order.getDeliveryDate()
+						, order.getTotalAmount(), order.getSurcharge(), order.getStatus(), order.getCustomerEmail()));
+			}
+			return presenter;
+		}
 	
 	@Path("/{oid}")
 	@GET
@@ -152,16 +160,29 @@ public class Order_REST_controller {
 		String s;
 		try {
 			Order order = orderManager.getOrderById(mid);
-			OrderPresenter presenter = new OrderPresenter(order.getId(), order.getOrderDate(), order.getDeliveryDate()
-					, order.getTotalAmount(), order.getSurcharge(), order.getStatus(), order.getCustomerEmail());
+			List<Item> items = order.listItem();
+			List<OrderDetailPresenter> order_detail = createOrderDetail(items);
+			OrderPresenter presenter = new OrderPresenter(order.getId(), order.getTotalAmount()
+					, order.getSurcharge(), order.getStatus(), order.getOrderDate()
+					, order.getDeliveryDate(), order.getCustomer()
+					, order.geteDeliveryAddress().toString(), order.getNote(), order_detail);
 			s = gson.toJson(presenter);
 		}
 		catch(RuntimeException e) {
-			System.out.println(e.toString());
 			return Response.status(400).build();
 		}
 		return Response.ok(s).build();
 		
 	}
+
+		private List<OrderDetailPresenter> createOrderDetail(List<Item> items) {
+			List<OrderDetailPresenter> order_detail = new ArrayList<OrderDetailPresenter>();
+			Iterator<Item> it = items.iterator();
+			while(it.hasNext()) {
+				Item item = it.next();
+				order_detail.add(new OrderDetailPresenter(item.getFoodId(), item.getFoodName(), item.getCount()));
+			}
+			return order_detail;
+		}
 	
 }

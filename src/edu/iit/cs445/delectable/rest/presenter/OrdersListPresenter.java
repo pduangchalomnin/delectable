@@ -1,8 +1,8 @@
-package edu.iit.cs445.delectable.rest;
+package edu.iit.cs445.delectable.rest.presenter;
 
 import java.math.BigDecimal;
 
-public class OrderPresenter {
+public class OrdersListPresenter {
 	private int id;
 	private String order_date;
 	private String delivery_date;
@@ -11,7 +11,7 @@ public class OrderPresenter {
 	private String status;
 	private String ordered_by;
 	
-	public OrderPresenter(int id, String order_date, String delivery_date
+	public OrdersListPresenter(int id, String order_date, String delivery_date
 			,BigDecimal amount,double surcharge,String status,String ordered_by){
 		this.id = id;
 		this.order_date = order_date;

@@ -1,4 +1,4 @@
-package edu.iit.cs445.delectable.rest;
+package edu.iit.cs445.delectable.rest.presenter;
 
 public class ItemPresenter {
 	private int id;

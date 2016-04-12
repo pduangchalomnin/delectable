@@ -10,11 +10,21 @@ public class Item {
 		this.food = food;
 		this.count = count;
 	}
+	
 	public Food getFood(){
 		return food;
 	}
+	
 	public int getCount(){
 		return count;
+	}
+	
+	public int getFoodId() {
+		return food.getId();
+	}
+	
+	public String getFoodName() {
+		return food.getName();
 	}
 	public BigDecimal getAmount(){
 		BigDecimal price_per_person = new BigDecimal(food.getPrice_per_person());

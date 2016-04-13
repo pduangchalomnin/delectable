@@ -10,6 +10,6 @@ find . -name “*.java” -type f -delete
 cd ../../../src
 find . -name “*.class” -type f -delete
 cd ../WebContent
-jar -cvf edu.iit.cs445.delectable.war *
-sudo cp edu.iit.cs445.delectable.war /var/lib/tomcat7/webapps
+jar -cvf delectable.war *
+sudo cp delectable.war /var/lib/tomcat7/webapps
 sudo service tomcat7 restart

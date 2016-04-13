@@ -25,7 +25,7 @@ Instruction to compile and deploy war file:
 Instruction to compile and run unit test:
 1. Open Terminal
 2. Head to project base directory (using ‘cd {folder location}’)
-3. Run command ‘sudo sh unittest_buil_and_run.sh’
+3. Run command ‘sudo sh unittest_build_and_run.sh’
 
 =================================================================
 

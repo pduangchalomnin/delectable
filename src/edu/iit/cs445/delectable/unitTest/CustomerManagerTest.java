@@ -74,6 +74,16 @@ public class CustomerManagerTest {
 		assertEquals(1, customerManager.getCustomerByKeyword("Bob").size());
 	}
 	
+	@Test
+	public void testGetCustomerByIdWithExistCustomer() {
+		assertSame(customer1,customerManager.getCustomerById(0));
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testGetCustomerByIdWithNonExistCustomer() {
+		customerManager.getCustomerById(99999);
+	}
+	
 	@AfterClass
 	public static void cleanUp() {
 		OrdersListImp.getInstance().resetOrders();

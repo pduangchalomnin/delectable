@@ -16,10 +16,10 @@ public class CustomerImp implements Customer {
 	
 	public CustomerImp(String firstName,String lastName,String phoneNumber,String email){
 		
-		this.firstName = firstName.toLowerCase();
-		this.lastName = lastName.toLowerCase();
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
-		this.email = email.toLowerCase();
+		this.email = email;
 		
 		OrdersList ordersList = OrdersListImp.getInstance();
 		int existingId = ordersList.checkExistingCustomer(email);
@@ -52,8 +52,7 @@ public class CustomerImp implements Customer {
 	}
 	
 	public boolean isMatch(String keyword) {
-		keyword = keyword.toLowerCase();
-		if(this.firstName.matches("(.*)"+keyword+"(.*)")
+		if(this.firstName.matches("(?i)(.*)"+keyword+"(.*)")
 				|| this.lastName.matches("(.*)"+keyword+"(.*)")
 				|| this.email.equals(keyword)
 				|| this.phoneNumber.equals(keyword))

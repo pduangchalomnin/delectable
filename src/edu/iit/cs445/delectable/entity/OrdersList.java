@@ -12,5 +12,6 @@ public interface OrdersList {
 	public int checkExistingCustomer(String email);
 	//Test Purpose only
 	public void resetOrders();	
+	public void applySurcharge();
 
 }

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -31,6 +32,7 @@ import edu.iit.cs445.delectable.interactor.MenuBoundaryInterface;
 import edu.iit.cs445.delectable.interactor.MenuManager;
 import edu.iit.cs445.delectable.interactor.OrderBoundaryInterface;
 import edu.iit.cs445.delectable.interactor.OrderManager;
+import edu.iit.cs445.delectable.rest.presenter.CustomerWithOutIdPresenter;
 import edu.iit.cs445.delectable.rest.presenter.ItemPresenter;
 import edu.iit.cs445.delectable.rest.presenter.OrderDetailPresenter;
 import edu.iit.cs445.delectable.rest.presenter.OrderPresenter;
@@ -83,10 +85,12 @@ public class Order_REST_controller {
 
 		private Customer createCustomer(JsonObject jsonObj) {
 			JsonObject jsonObjAddress = jsonObj.get("personal_info").getAsJsonObject();
-			String cutomer_name = jsonObjAddress.get("name").getAsString();
+			String customer_name = jsonObjAddress.get("name").getAsString();
+			String firstName = customer_name.split(" ")[0];
+			String lastName = customer_name.split(" ")[1];
 			String email = jsonObjAddress.get("email").getAsString();
 			String phone = jsonObjAddress.get("phone").getAsString();
-			Customer customer = new CustomerImp(cutomer_name, email, phone, email);
+			Customer customer = new CustomerImp(firstName, lastName, phone, email);
 			return customer;
 		}
 
@@ -146,8 +150,7 @@ public class Order_REST_controller {
 			Iterator<Order> it = orders.iterator();
 			while(it.hasNext()){
 				Order order = it.next();
-				presenter.add(new OrdersListPresenter(order.getId(), order.getOrderDate(), order.getDeliveryDate()
-						, order.getTotalAmount(), order.getSurcharge(), order.getStatus(), order.getCustomerEmail()));
+				presenter.add(new OrdersListPresenter(order));
 			}
 			return presenter;
 		}
@@ -162,14 +165,11 @@ public class Order_REST_controller {
 			Order order = orderManager.getOrderById(mid);
 			List<Item> items = order.listItem();
 			List<OrderDetailPresenter> order_detail = createOrderDetail(items);
-			OrderPresenter presenter = new OrderPresenter(order.getId(), order.getTotalAmount()
-					, order.getSurcharge(), order.getStatus(), order.getOrderDate()
-					, order.getDeliveryDate(), order.getCustomer()
-					, order.geteDeliveryAddress().toString(), order.getNote(), order_detail);
+			OrderPresenter presenter = new OrderPresenter(order,new CustomerWithOutIdPresenter(order.getCustomer()), order_detail);
 			s = gson.toJson(presenter);
 		}
 		catch(RuntimeException e) {
-			return Response.status(400).build();
+			return Response.status(404).build();
 		}
 		return Response.ok(s).build();
 		
@@ -180,9 +180,31 @@ public class Order_REST_controller {
 			Iterator<Item> it = items.iterator();
 			while(it.hasNext()) {
 				Item item = it.next();
-				order_detail.add(new OrderDetailPresenter(item.getFoodId(), item.getFoodName(), item.getCount()));
+				order_detail.add(new OrderDetailPresenter(item));
 			}
 			return order_detail;
 		}
+		
+	@Path("/cancel/{oid}")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deliveredOrder(@PathParam("oid") int oid,String json) {
+		JsonObject jsonObj = getGsonObject(json);
+		Response response;
+		try {
+			int id = jsonObj.get("id").getAsInt();
+			if(id != oid) {
+				response = Response.status(400).build();
+			}
+			else {
+				orderManager.cancelOrder(oid);
+				response = Response.status(204).header("Location",String.format("order/%s",oid)).build();
+			}
+		}
+		catch(RuntimeException e) {
+			response = Response.status(404).build();
+		}
+		return response;
+	}
 	
 }

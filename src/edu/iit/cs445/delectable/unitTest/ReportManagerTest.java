@@ -136,7 +136,7 @@ public class ReportManagerTest {
 		RevenueReport revenue = reportManager.getRevenueReport(dateFormat.format(date), dateFormat.format(tomorrow));
 		surcharge = applySurcharge(dateFormat.format(date)) + applySurcharge(dateFormat.format(tomorrow));
 		
-		assertEquals(3.98*2, revenue.getFood_revenue(),DELTA);
+		assertEquals(3.98, revenue.getFood_revenue(),DELTA);
 		assertEquals(surcharge, revenue.getSurcharge_revenue(),DELTA);
 		assertEquals(2, revenue.getOrders_placed());
 		assertEquals(1, revenue.getOrders_open());
@@ -160,6 +160,8 @@ public class ReportManagerTest {
 	public void testGetRevenueReportOfNextSaturday() {
 		RevenueReport revenue = reportManager.getRevenueReport(dateFormat.format(saturday), dateFormat.format(saturday));	
 		
+		assertEquals(dateFormat.format(saturday),revenue.getStart_date());
+		assertEquals(dateFormat.format(saturday),revenue.getEnd_date());
 		assertEquals(3.98, revenue.getFood_revenue(),DELTA);
 		assertEquals(2, revenue.getSurcharge_revenue(),DELTA);
 		assertEquals(1, revenue.getOrders_placed());
@@ -173,7 +175,9 @@ public class ReportManagerTest {
 		RevenueReport revenue = reportManager.getRevenueReport(dateFormat.format(date), "");
 		surcharge = applySurcharge(dateFormat.format(date)) + applySurcharge(dateFormat.format(tomorrow))+2;
 		
-		assertEquals(3.98*3, revenue.getFood_revenue(),DELTA);
+		assertEquals(dateFormat.format(date),revenue.getStart_date());
+		assertEquals("",revenue.getEnd_date());
+		assertEquals(3.98*2, revenue.getFood_revenue(),DELTA);
 		assertEquals(surcharge, revenue.getSurcharge_revenue(),DELTA);
 		assertEquals(3, revenue.getOrders_placed());
 		assertEquals(2, revenue.getOrders_open());
@@ -189,10 +193,18 @@ public class ReportManagerTest {
 		
 		RevenueReport revenue = reportManager.getRevenueReport("", dateFormat.format(yesterday));
 		
+		assertEquals("",revenue.getStart_date());
+		assertEquals(dateFormat.format(yesterday),revenue.getEnd_date());
 		assertEquals(0, revenue.getFood_revenue(),DELTA);
 		assertEquals(0, revenue.getSurcharge_revenue(),DELTA);
 		assertEquals(0, revenue.getOrders_placed());
 		assertEquals(0, revenue.getOrders_open());
 		assertEquals(0, revenue.getOrders_cancelled());
+	}
+	
+	@Test
+	public void testGetReportCode() {
+		ReportCode report = new ReportCode(801, "Orders to deliver today");
+		assertEquals(report.getName(),reportManager.getReportCode(801).getName());
 	}
 }

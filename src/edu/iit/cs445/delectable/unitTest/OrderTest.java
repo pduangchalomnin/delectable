@@ -143,22 +143,22 @@ public class OrderTest {
 	
 	@Test
 	public void testIsCustomerMatchWithPartialFirstName() {
-		assertTrue(order.isCustomerMatch("first"));
+		assertTrue(order.isCustomerMatch("First"));
 	}
 	
 	@Test
 	public void testIsCustomerMatchWithFullFirstName() {
-		assertTrue(order.isCustomerMatch("firstname"));
+		assertTrue(order.isCustomerMatch("FirstName"));
 	}
 	
 	@Test
 	public void testIsCustomerMatchWithPartialLastName() {
-		assertTrue(order.isCustomerMatch("last"));
+		assertTrue(order.isCustomerMatch("Last"));
 	}
 	
 	@Test
 	public void testIsCustomerMatchWithFullLastName() {
-		assertTrue(order.isCustomerMatch("lastname"));
+		assertTrue(order.isCustomerMatch("LastName"));
 	}
 	
 	@Test

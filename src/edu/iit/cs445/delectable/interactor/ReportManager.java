@@ -63,10 +63,11 @@ public class ReportManager implements ReportBoundaryInterface {
 				if(end_date != null) {
 					endDate = Integer.parseInt(dateFormat.format(end_date));
 				}
-				
-				if((start_date!=null && end_date!=null && deliverDate>=startDate && deliverDate<=endDate)
+				if(!tmpOrder.getStatus().equals(Status.CANCELED.toString())
+						&& (start_date!=null && end_date!=null && deliverDate>=startDate && deliverDate<=endDate)
 						|| (start_date!=null && end_date==null && deliverDate>=startDate)
-						|| (start_date==null && end_date!=null && deliverDate<=endDate)) {
+						|| (start_date==null && end_date!=null && deliverDate<=endDate)
+						|| (start_date==null && end_date==null)) {
 					output.add(tmpOrder);
 				}
 			}
@@ -86,6 +87,8 @@ public class ReportManager implements ReportBoundaryInterface {
 
 	public RevenueReport getRevenueReport(String start_date, String end_date) throws RuntimeException{
 		RevenueReport report = new RevenueReport();
+		report.setStart_date(start_date);
+		report.setEnd_date(end_date);
 		
 		if(!start_date.isEmpty()) {
 			validateDateTime(start_date);
@@ -111,7 +114,8 @@ public class ReportManager implements ReportBoundaryInterface {
 			
 			if((!start_date.isEmpty() && !end_date.isEmpty() && deliverDate >= startDate && deliverDate <= endDate)
 				|| (!start_date.isEmpty() && end_date.isEmpty()	&& deliverDate >= startDate)
-				|| (start_date.isEmpty() && !end_date.isEmpty()	&& deliverDate <= endDate))
+				|| (start_date.isEmpty() && !end_date.isEmpty()	&& deliverDate <= endDate)
+				|| (start_date.isEmpty() && end_date.isEmpty()))
 			{
 				addReportValue(report, tmpOrder);
 			}
@@ -126,11 +130,13 @@ public class ReportManager implements ReportBoundaryInterface {
 		}
 
 		private void addReportValue(RevenueReport report, Order tmpOrder) {
-			report.setFood_revenue(report.getFood_revenue()+tmpOrder.getTotalAmount().doubleValue());
-			BigDecimal roundUp = new BigDecimal(report.getFood_revenue());
-			roundUp = roundUp.setScale(2, BigDecimal.ROUND_HALF_UP);  
-			report.setFood_revenue(roundUp.doubleValue());
-			report.setSurcharge_revenue(report.getSurcharge_revenue()+tmpOrder.getSurcharge());
+			if(!tmpOrder.getStatus().equals(Status.CANCELED.toString())) {
+				report.setFood_revenue(report.getFood_revenue()+tmpOrder.getTotalAmount().doubleValue());
+				BigDecimal roundUp = new BigDecimal(report.getFood_revenue());
+				roundUp = roundUp.setScale(2, BigDecimal.ROUND_HALF_UP);  
+				report.setFood_revenue(roundUp.doubleValue());
+				report.setSurcharge_revenue(report.getSurcharge_revenue()+tmpOrder.getSurcharge());
+			}
 			report.setOrders_placed(report.getOrders_placed()+1);
 			if(tmpOrder.getStatus().equals(Status.CANCELED.toString())) {
 				report.setOrders_cancelled(report.getOrders_cancelled()+1);
@@ -203,5 +209,14 @@ public class ReportManager implements ReportBoundaryInterface {
 			}
 			return output;
 		}
+
+	public ReportCode getReportCode(int rid) throws RuntimeException {
+		for(int i=0;i<reportCodes.length;i++) {
+			if(reportCodes[i].getCode() == rid) {
+				return reportCodes[i];
+			}
+		}
+		throw new RuntimeException();
+	}
 
 }

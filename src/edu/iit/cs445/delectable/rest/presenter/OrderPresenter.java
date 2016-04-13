@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import edu.iit.cs445.delectable.entity.Customer;
+import edu.iit.cs445.delectable.entity.Order;
 
 public class OrderPresenter {
 	private int id;
@@ -12,24 +13,21 @@ public class OrderPresenter {
 	private String status;
 	private String order_date;
 	private String delivery_date;
-	private Customer ordered_by;
+	private CustomerWithOutIdPresenter ordered_by;
 	private String delivery_address;
 	private String note;
 	private List<OrderDetailPresenter> order_detail;
 	
-	public OrderPresenter(int id,BigDecimal amount,Double surcharge
-			,String status,String order_date,String delivery_date
-			,Customer ordered_by,String delivery_address,String note
-			,List<OrderDetailPresenter> order_detail) {
-		this.id = id;
-		this.amount = amount;
-		this.surcharge = surcharge;
-		this.status = status;
-		this.order_date = order_date;
-		this.delivery_date = delivery_date;
-		this.ordered_by = ordered_by;
-		this.delivery_address = delivery_address;
-		this.note = note;
+	public OrderPresenter(Order order,CustomerWithOutIdPresenter customer,List<OrderDetailPresenter> order_detail) {
+		this.id = order.getId();
+		this.amount = order.getTotalAmount();
+		this.surcharge = order.getSurcharge();
+		this.status = order.getStatus();
+		this.order_date = order.getOrderDate();
+		this.delivery_date = order.getDeliveryDate();
+		this.ordered_by = customer;
+		this.delivery_address = order.geteDeliveryAddress().toString();
+		this.note = order.getNote();
 		this.order_detail = order_detail;
 	}
 }

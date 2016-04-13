@@ -49,7 +49,7 @@ public class Menu_REST_controller {
 			food = menuManager.getMenuItem(mid);
 		}
 		catch(RuntimeException e) {
-			return Response.status(400).build();
+			return Response.status(404).build();
 		}
 		String s = gson.toJson(food);
 		return Response.ok(s).build();

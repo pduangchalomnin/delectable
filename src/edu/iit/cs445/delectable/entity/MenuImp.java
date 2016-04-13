@@ -77,7 +77,6 @@ public class MenuImp implements Menu {
 		return surcharge;
 	}
 
-	@Override
 	public void setSurcharge(double amount) {
 		this.surcharge = amount;
 	}

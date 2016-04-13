@@ -71,7 +71,7 @@ public class CustomerManager implements CustomerBoundaryInterface {
 
 	public Customer getCustomerById(int id) throws RuntimeException {
 		OrdersList ordersList = OrdersListImp.getInstance();
-		ListIterator<Order> it =  ordersList.getOrders().listIterator();
+		ListIterator<Order> it =  ordersList.getOrders().listIterator(ordersList.getOrders().size());
 		
 		while(it.hasPrevious()) {
 			Order order = it.previous();

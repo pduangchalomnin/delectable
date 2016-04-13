@@ -52,6 +52,11 @@ public class AdminManagerTest {
 		admin.addFoodToMenu("Name",1.99,0,new Catagory[]{});
 	}
 	
+	@Test(expected = RuntimeException.class)
+	public void testAddFoodWithNullCatagories() {
+		admin.addFoodToMenu("Name",0.1,2,new Catagory[]{null});
+	}
+	
 	@Test
 	public void testAddFoodValidData(){
 		hasToDelete = true;

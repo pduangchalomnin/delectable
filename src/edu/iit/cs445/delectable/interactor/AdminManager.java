@@ -14,6 +14,7 @@ public class AdminManager implements AdminBoundaryInterface {
 	
 	private static AdminBoundaryInterface instance = null;
 	private Menu menu = null;
+	private OrdersList orders = OrdersListImp.getInstance();
 	
 	private AdminManager(){
 		menu = MenuImp.getInstance();
@@ -33,9 +34,18 @@ public class AdminManager implements AdminBoundaryInterface {
 			|| minimum_order < 1) {
 			throw new RuntimeException();
 		}
+		validateCatagories(catagories);
 		Food food = new FoodImp(name, price_per_person, minimum_order, catagories);
 		return menu.addItem(food);
 	}
+
+		private void validateCatagories(Catagory[] catagories) throws RuntimeException{
+			for(int i=0;i < catagories.length; i++){
+				if(catagories[i]==null) {
+					throw new RuntimeException();
+				}
+			}
+		}
 
 	public void editFoodInMenu(int id,double price_per_person) throws RuntimeException {
 		Food foodToBeEdited = menu.searchItemById(id);
@@ -57,10 +67,10 @@ public class AdminManager implements AdminBoundaryInterface {
 		if(surcharge < 0.00)
 			throw new RuntimeException();
 		menu.setSurcharge(surcharge);
+		orders.applySurcharge();
 	}
 
 	public void deliveredOrder(int id) throws RuntimeException {
-		OrdersList orders = OrdersListImp.getInstance();
 		Order order = orders.getOrderById(id);
 		if(order.isNil()){
 			throw new RuntimeException();

@@ -12,5 +12,6 @@ public interface ReportBoundaryInterface {
 	public List<Order> getDeliveryTomorrow();
 	public RevenueReport getRevenueReport(String start_date,String end_date) throws RuntimeException;
 	public List<Order> getDeliveryList(String start_date,String end_date) throws RuntimeException;
+	public ReportCode getReportCode(int rid) throws RuntimeException;
 
 }

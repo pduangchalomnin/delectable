@@ -50,12 +50,6 @@ public class CustomerTest {
 		assertEquals(order1.getCustomerId(), order2.getCustomerId());
 	}
 	
-	@Test
-	public void testCustomerConstructorShouldLowercaseTheNameLastNameAndEmail() {
-		assertEquals("name", customer.getFirstName());
-		assertEquals("lastname", customer.getLastName());
-		assertEquals("eeee@ee.com", customer.getEmail());
-	}
 	
 	@Test
 	public void testIsMatchNoting() {
@@ -64,12 +58,12 @@ public class CustomerTest {
 	
 	@Test
 	public void testIsMatchLastname() {
-		assertTrue(customer.isMatch("last"));
+		assertTrue(customer.isMatch("Last"));
 	}
 	
 	@Test
 	public void testIsMatchEmail() {
-		assertTrue(customer.isMatch("eeee@ee.com"));
+		assertTrue(customer.isMatch("EEEE@ee.CoM"));
 	}
 	
 	@Test

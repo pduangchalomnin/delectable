@@ -126,7 +126,7 @@ public class Admin_REST_controller {
 			}
 		}
 		catch(RuntimeException e) {
-			response = Response.status(400).build();
+			response = Response.status(404).build();
 		}
 		return response;
 	}

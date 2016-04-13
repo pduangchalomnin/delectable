@@ -41,7 +41,7 @@ public class AdminManager implements AdminBoundaryInterface {
 
 		private void validateCatagories(Catagory[] catagories) throws RuntimeException{
 			for(int i=0;i < catagories.length; i++){
-				if(catagories[i]==null) {
+				if(catagories[i].toString()==null) {
 					throw new RuntimeException();
 				}
 			}

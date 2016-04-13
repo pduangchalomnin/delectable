@@ -64,10 +64,10 @@ public class ReportManager implements ReportBoundaryInterface {
 					endDate = Integer.parseInt(dateFormat.format(end_date));
 				}
 				if(!tmpOrder.getStatus().equals(Status.CANCELED.toString())
-						&& (start_date!=null && end_date!=null && deliverDate>=startDate && deliverDate<=endDate)
+						&& ((start_date!=null && end_date!=null && deliverDate>=startDate && deliverDate<=endDate)
 						|| (start_date!=null && end_date==null && deliverDate>=startDate)
 						|| (start_date==null && end_date!=null && deliverDate<=endDate)
-						|| (start_date==null && end_date==null)) {
+						|| (start_date==null && end_date==null))) {
 					output.add(tmpOrder);
 				}
 			}
@@ -90,12 +90,8 @@ public class ReportManager implements ReportBoundaryInterface {
 		report.setStart_date(start_date);
 		report.setEnd_date(end_date);
 		
-		if(!start_date.isEmpty()) {
-			validateDateTime(start_date);
-		}
-		if(!end_date.isEmpty()) {
-			validateDateTime(end_date);
-		}
+		validateDateTime(start_date);
+		validateDateTime(end_date);
 		validateDateRange(start_date, end_date);
 		
 		OrdersList orders = OrdersListImp.getInstance();
@@ -147,30 +143,28 @@ public class ReportManager implements ReportBoundaryInterface {
 		}
 	
 		private void validateDateTime(String date) throws RuntimeException {
-			int year = Integer.parseInt(date.substring(0, 4));
-			int month = Integer.parseInt(date.substring(4,6));
-			int day = Integer.parseInt(date.substring(6));
-			Calendar calendar = Calendar.getInstance();
-			
-			if(date.length() != 8) {
-				throw new RuntimeException();
-			}
-			calendar.set(Calendar.YEAR, year);
-			calendar.set(Calendar.MONTH, month-1);
-			int maxDay = calendar.getActualMaximum(Calendar.DATE);
-			
-			if(month < 1 || month > 12 || day < 1 || day > maxDay || year <= 0){
-				throw new RuntimeException();
+			if(!date.isEmpty()) {
+				int year = Integer.parseInt(date.substring(0, 4));
+				int month = Integer.parseInt(date.substring(4,6));
+				int day = Integer.parseInt(date.substring(6));
+				Calendar calendar = Calendar.getInstance();
+				
+				if(date.length() != 8) {
+					throw new RuntimeException();
+				}
+				calendar.set(Calendar.YEAR, year);
+				calendar.set(Calendar.MONTH, month-1);
+				int maxDay = calendar.getActualMaximum(Calendar.DATE);
+				
+				if(month < 1 || month > 12 || day < 1 || day > maxDay || year <= 0){
+					throw new RuntimeException();
+				}
 			}
 		}
 
 	public List<Order> getDeliveryList(String start_date, String end_date) throws RuntimeException{
-		if(!start_date.isEmpty()) {
-			validateDateTime(start_date);
-		}
-		if(!end_date.isEmpty()) {
-			validateDateTime(end_date);
-		}
+		validateDateTime(start_date);
+		validateDateTime(end_date);
 		validateDateRange(start_date, end_date);
 		Date startDate = formatStartDate(start_date);
 		Date endDate = formatEndDate(end_date);

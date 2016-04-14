@@ -16,7 +16,7 @@ Instruction to compile and deploy war file:
 1. Open Terminal
 2. Head to project base directory (using ‘cd {folder location}’)
 3. Run command ‘sudo sh build_and_run.sh’
-4. You can now access website by url
+4. You can now access web service by url
 ‘localhost:8080/delectable/{your option}’
 5. The war file will be in WebContent directory
 

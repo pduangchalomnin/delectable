@@ -67,7 +67,6 @@ public class AdminManager implements AdminBoundaryInterface {
 		if(surcharge < 0.00)
 			throw new RuntimeException();
 		menu.setSurcharge(surcharge);
-		orders.applySurcharge();
 	}
 
 	public void deliveredOrder(int id) throws RuntimeException {
